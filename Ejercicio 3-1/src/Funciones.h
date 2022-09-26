@@ -1,0 +1,1 @@
+void funcionMostrar(int num);

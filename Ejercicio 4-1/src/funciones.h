@@ -1,0 +1,1 @@
+int pedirNumero(void);
