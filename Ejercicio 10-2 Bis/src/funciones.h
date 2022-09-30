@@ -1,0 +1,30 @@
+#ifndef FUNCIONES_H_
+#define FUNCIONES_H_
+typedef struct
+{
+	int idSector;
+	char descripcionSector[51];
+}eSector;
+typedef struct
+{
+	int id;
+	char name[51];
+	char lastName[51];
+	float salary;
+	int sector;
+	int isEmpty;
+}eEmpleado;
+int inicializarEmpleados(eEmpleado* empleados,int cantidad,int estado);
+eEmpleado cargarEmpleado(int estado, int* id);
+eSector cargarSector(eSector sectores[],int cantidad);
+int buscarEspacioLibre(eEmpleado* empleados,int cantidad, int estado, int* id);
+int buscarClientePorId(eEmpleado* empleados, int* id);
+int inicializarId(eEmpleado* empleados,int cantidad);
+int ingresarIdParaModificar(eEmpleado* empleados,int cantidad);
+int mostrarEmpleados(eEmpleado* empleados,int cantidadUno,eSector* sectores);
+int modificarEmpleado(eEmpleado* modificar, int opcion,int posicion);
+int darDeBajaEmpleado(eEmpleado* modificar,int posicion,int estado);
+int ordenarPorApellido(eEmpleado* ordenar,eEmpleado ordenador,int cantidad);
+int sacarPromedioEstructuras(eEmpleado* calcular,int cantidad,float* resultado);
+int calcularEmpleadosMejorPromedio(eEmpleado* calcular,int cantidad, float promedio);
+#endif
