@@ -70,9 +70,6 @@ eSector cargarSector(eSector* sectores,int cantidad)
 				carga.idSector=sectores[i].idSector;
 				strcpy(carga.descripcionSector,sectores[i].descripcionSector);
 				repeticion=0;
-			}else{
-				printf("\n--ERROR--\n");
-				printf("El numero ingresado no corresponde a un id\n");
 			}
 		}
     }while(repeticion!=0);
@@ -193,6 +190,9 @@ int ordenarPorApellido(eEmpleado* ordenar,eEmpleado ordenador,int cantidad,eSect
 						ordenador=ordenar[i];
 						ordenar[i]=ordenar[j];
 						ordenar[j]=ordenador;
+						ordenadorUno=ordenarUno[i];
+						ordenarUno[i]=ordenarUno[j];
+						ordenarUno[j]=ordenadorUno;
 					}
                 }
             }
@@ -208,25 +208,26 @@ int ordenarPorSector(eEmpleado* ordenar,eEmpleado ordenador,int cantidad,eSector
         for(i=0;i<cantidad-1;i++){
             for(j=i+1;j<cantidad;j++){
             	if(ordenar[i].isEmpty==0){
-					if(strcmp(ordenar[i].lastName,ordenar[j].lastName)==0){
-						if (ordenarUno[i].idSector>ordenarUno[j].idSector){
-							ordenadorUno=ordenarUno[i];
-							ordenarUno[i]=ordenarUno[j];
-							ordenarUno[j]=ordenadorUno;
-						}
+					if (ordenarUno[i].idSector>ordenarUno[j].idSector){
+						ordenadorUno=ordenarUno[i];
+						ordenarUno[i]=ordenarUno[j];
+						ordenarUno[j]=ordenadorUno;
+						ordenador=ordenar[i];
+						ordenar[i]=ordenar[j];
+						ordenar[j]=ordenador;
 					}
-                }
+				}
             }
         }
         retorno=0;
     }
     return retorno;
 }
-int contador(eEmpleado* estado,eSector* dato,int cantidad,int sector)
+int contador(eEmpleado* empleados,int cantidad,int sector)
 {
 	int i,contador=0;
 	for(i=0;i<cantidad;i++){
-		if(estado[i].isEmpty==0 && dato[i].idSector==sector){
+		if(empleados[i].isEmpty==0 && empleados[i].sector==sector){
 			contador++;
 		}
 
@@ -235,23 +236,33 @@ int contador(eEmpleado* estado,eSector* dato,int cantidad,int sector)
 }
 int listarMayorSector(eEmpleado* empleados,int cantidad,eSector* sectores)
 {
-	int retorno=-1,i,contadorAuxiliar=0,sectorMaximo,cantidadEmpleadosMaximo;
+	int retorno=-1,i,contadorAuxiliar=0,contDos=0,sectorMaximo,cantidadEmpleadosMaximo;
 	if(empleados!=NULL && sectores!=NULL){
 		for(i=0;i<cantidad;i++){
-			if(i>0){
-					contadorAuxiliar=contador(empleados,sectores,cantidad,sectores[0].idSector);
-					sectorMaximo=sectores[0].idSector;
-					cantidadEmpleadosMaximo=contadorAuxiliar;
-			}else{
-				contadorAuxiliar=contador(empleados,sectores,cantidad,sectores[0].idSector);
-				if(sectores[i].idSector!=sectores[i+1].idSector){
-					sectorMaximo=sectores[0].idSector;
-					cantidadEmpleadosMaximo=contadorAuxiliar;
+			if(empleados[i].isEmpty==0){
+				if(i>0){
+					if(sectores[i].idSector==sectores[i+1].idSector){
+						//contadorAuxiliar=contador(empleados,cantidad,empleados[0].sector);
+						contadorAuxiliar++;
+						sectorMaximo=sectores[0].idSector;
+						cantidadEmpleadosMaximo=contadorAuxiliar;
+						//printf("\n%d A ",sectorMaximo);
+						printf("\n%d A ",contadorAuxiliar);
+					}else{
+						//contadorAuxiliar=contador(empleados,cantidad,empleados[i].sector);
+						if(sectores[i].idSector!=sectores[i+1].idSector){
+							contDos++;
+							sectorMaximo=sectores[0].idSector;
+							cantidadEmpleadosMaximo=contDos;
+							//printf("\n%d B ",sectorMaximo);
+							printf("\n%d B ",contDos);
+					}
 				}
 			}
 		}
-		printf("\%d",sectorMaximo);
-		printf("\%d",cantidadEmpleadosMaximo);
+	}
+		//printf("\n%d C ",sectorMaximo);
+		//printf("\n%d C ",cantidadEmpleadosMaximo);
 		retorno=0;
 	}
 	return retorno;

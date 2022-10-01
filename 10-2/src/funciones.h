@@ -25,7 +25,7 @@ int mostrarEmpleados(eEmpleado* empleados,int cantidadUno,eSector* sectores);
 int modificarEmpleado(eEmpleado* modificar, int opcion,int posicion);
 int darDeBajaEmpleado(eEmpleado* modificar,int posicion,int estado);
 int ordenarPorSector(eEmpleado* ordenar,eEmpleado ordenador,int cantidad,eSector* ordenarUno,eSector ordenadorUno);
-int contador(eEmpleado* estado,eSector* dato,int cantidad,int sector);
+int contador(eEmpleado* empleados,int cantidad,int sector);
 int ordenarPorApellido(eEmpleado* ordenar,eEmpleado ordenador,int cantidad,eSector* ordenarUno,eSector ordenadorUno);
 int listarMayorSector(eEmpleado* empleados,int cantidad,eSector* sectores);
 int sacarPromedioEstructuras(eEmpleado* calcular,int cantidad,float* resultado);
