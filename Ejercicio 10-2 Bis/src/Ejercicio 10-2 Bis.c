@@ -23,10 +23,11 @@ int main(void) {
 
 	eEmpleado empleados[TAM];
 	eEmpleado empleado;
-	eEmpleado sector;
+	eSector listaSector[TAM];
 	eSector sectores[4]={
 		{100,"Sistemas"},{200,"RecursosHumanos"},{300,"Administracion"},{400,"Gerencia"}
 	};
+	eSector sector={100,"Sistemas"};
 	int posicionVacia,eleccionDos,modificar,elegirModificar,cantidadSueldosMasAltos=0;
 	char eleccionUno;
 	float resultado,totalSueldos;
@@ -41,9 +42,10 @@ int main(void) {
                 do{
                 	posicionVacia=buscarEspacioLibre(empleados,TAM,VACIO,&id);
                 	empleados[posicionVacia] = cargarEmpleado(OCUPADO,&id);
-                	sectores[posicionVacia] = cargarSector(sectores,TAMC);
-                	mostrarEmpleados(empleados,TAM,sectores);
-                	eleccionDos=continuarCarga("\n¿Cargar otro empleado?", "\n9 para salir: ");
+                	listaSector[posicionVacia] = cargarSector(sectores,TAMC);
+                	empleados[posicionVacia].sector=listaSector[posicionVacia].idSector;
+                	mostrarEmpleados(empleados,TAM,listaSector);
+                	eleccionDos=continuarCarga("\nCargar otro empleado?", "\n9 para salir: ");
     	        }while(eleccionDos!=9);
             break;
             case '2':
@@ -51,14 +53,14 @@ int main(void) {
                     modificar=ingresarIdParaModificar(empleados,TAM);
                     elegirModificar=subMenu("\n1.Modifique nombre","\n2.Modifique apellido","\n3.Modifique sueldo","\n4.Modifique sector","\nIngrese opcion: ");
                     modificarEmpleado(empleados,elegirModificar,modificar);
-                    eleccionDos=continuarCarga("\n¿Modificar otro empleado?", "\n9 para salir: ");
+                    eleccionDos=continuarCarga("\nModificar otro empleado?", "\n9 para salir: ");
                 }while(eleccionDos!=9);
             break;
             case '3':
             	do{
             	    modificar=ingresarIdParaModificar(empleados,TAM);
             	    darDeBajaEmpleado(empleados,modificar,VACIO);
-            	    eleccionDos=continuarCarga("\n¿Dar de baja otro empleado?", "\n9 para salir: ");
+            	    eleccionDos=continuarCarga("\nDar de baja otro empleado?", "\n9 para salir: ");
             	}while(eleccionDos!=9);
             break;
             case '4':
@@ -67,9 +69,15 @@ int main(void) {
             	    "\n2.Para listar total y promedio de los salarios,y cuantos superan el promedio",
             	    "\n3.Para saber el sector con mas empleados","\nElija una opcion: ");
             	    if(modificar==1){
-            	    ordenarPorApellido(empleados,empleado,TAM);
+            	    ordenarPorApellido(empleados,empleado,TAM,listaSector,sector);
             	    //ordenarPorSector(empleados,empleado,TAM);
-            	    mostrarEmpleados(empleados,TAM,sectores);
+            	    mostrarEmpleados(empleados,TAM,listaSector);
+            	    for(int i=0;i<TAM;i++){
+            	    	if(empleados[i].isEmpty==OCUPADO){
+            	    	printf("\n%d",empleados[i].sector);
+            	    	printf("\n%d - %d - %s",i,listaSector[i].idSector,listaSector[i].descripcionSector);
+            	    	}
+            	    }
                 	}
                 	if(modificar==2){
                 	    totalSueldos=sacarPromedioEstructuras(empleados,TAM,&resultado);
@@ -78,13 +86,15 @@ int main(void) {
                 	    printf("\nLa cantidad de empleados que superan el sueldo promedio son: %d\n",cantidadSueldosMasAltos);
                 	}
                 	if(modificar==3){
-
+                		ordenarPorSector(empleados,empleado,TAM);
+                		mostrarEmpleados(empleados,TAM,listaSector);
+                		listarMayorSector(empleados,TAM,listaSector);
                 	}
-                	eleccionDos=continuarCarga("\n¿Salir del menu listado?", "\n9 para salir: ");
+                	eleccionDos=continuarCarga("\nSalir del menu listado?", "\n9 para salir: ");
                 }while(eleccionDos!=9);
             break;
             case '5':
-            	eleccionUno=continuarCarga("\n¿Desea salir del programa?", "\n9 para salir: ");
+            	eleccionUno=continuarCarga("\nDesea salir del programa?", "\n9 para salir: ");
             break;
         }
     }while(eleccionUno!=9);
