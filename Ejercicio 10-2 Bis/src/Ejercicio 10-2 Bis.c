@@ -28,7 +28,7 @@ int main(void) {
 		{100,"Sistemas"},{200,"RecursosHumanos"},{300,"Administracion"},{400,"Gerencia"}
 	};
 	eSector sector={100,"Sistemas"};
-	int posicionVacia,eleccionDos,modificar,elegirModificar,cantidadSueldosMasAltos=0;
+	int posicionVacia,eleccionDos,modificar,elegirModificar,cantidadSueldosMasAltos=0,validarModificacfion;
 	char eleccionUno;
 	float resultado,totalSueldos;
 	inicializarId(empleados,TAM);
@@ -50,9 +50,12 @@ int main(void) {
             break;
             case '2':
                 do{
-                    modificar=ingresarIdParaModificar(empleados,TAM);
-                    elegirModificar=subMenu("\n1.Modifique nombre","\n2.Modifique apellido","\n3.Modifique sueldo","\n4.Modifique sector","\nIngrese opcion: ");
-                    modificarEmpleado(empleados,elegirModificar,modificar);
+                	do{
+						mostrarEmpleados(empleados,TAM,listaSector);
+						modificar=ingresarIdParaModificar(empleados,TAM);
+						elegirModificar=subMenu("\n1.Modifique nombre","\n2.Modifique apellido","\n3.Modifique sueldo","\n4.Modifique sector","\nIngrese opcion: ");
+						validarModificacfion=modificarEmpleado(empleados,elegirModificar,modificar,sectores,listaSector);
+                    }while(validarModificacfion!=0);
                     eleccionDos=continuarCarga("\nModificar otro empleado?", "\n9 para salir: ");
                 }while(eleccionDos!=9);
             break;
@@ -70,14 +73,7 @@ int main(void) {
             	    "\n3.Para saber el sector con mas empleados","\nElija una opcion: ");
             	    if(modificar==1){
             	    ordenarPorApellido(empleados,empleado,TAM,listaSector,sector);
-            	    //ordenarPorSector(empleados,empleado,TAM);
             	    mostrarEmpleados(empleados,TAM,listaSector);
-            	    for(int i=0;i<TAM;i++){
-            	    	if(empleados[i].isEmpty==OCUPADO){
-            	    	printf("\n%d",empleados[i].sector);
-            	    	printf("\n%d - %d - %s",i,listaSector[i].idSector,listaSector[i].descripcionSector);
-            	    	}
-            	    }
                 	}
                 	if(modificar==2){
                 	    totalSueldos=sacarPromedioEstructuras(empleados,TAM,&resultado);
@@ -86,8 +82,7 @@ int main(void) {
                 	    printf("\nLa cantidad de empleados que superan el sueldo promedio son: %d\n",cantidadSueldosMasAltos);
                 	}
                 	if(modificar==3){
-                		ordenarPorSector(empleados,empleado,TAM);
-                		mostrarEmpleados(empleados,TAM,listaSector);
+                		ordenarPorSector(empleados,empleado,TAM,listaSector,sector);
                 		listarMayorSector(empleados,TAM,listaSector);
                 	}
                 	eleccionDos=continuarCarga("\nSalir del menu listado?", "\n9 para salir: ");
